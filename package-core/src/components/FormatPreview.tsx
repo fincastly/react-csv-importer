@@ -8,6 +8,7 @@ import { FormatErrorMessage } from './FormatErrorMessage';
 
 import './FormatPreview.scss';
 import { TranslationContext } from '../translation/TranslationContext';
+import { File } from '../model/File';
 
 export const FormatPreview: React.FC<{
   file: File;

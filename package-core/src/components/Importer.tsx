@@ -10,6 +10,7 @@ import { FileSelector } from './FileSelector';
 import { FormatPreview } from './FormatPreview';
 import { ColumnPicker, Field } from './ColumnPicker';
 import { ProgressDisplay, ImportInfo } from './ProgressDisplay';
+import { File } from '../model/File';
 
 import './Importer.scss';
 import { TranslationContext } from '../translation/TranslationContext';

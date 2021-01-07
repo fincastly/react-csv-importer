@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { File } from '../model/File';
 import { TranslationContext } from '../translation/TranslationContext';
 
 import './FileSelector.scss';

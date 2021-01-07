@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 
 import { PreviewInfo, FieldAssignmentMap } from './parser';
 import { ImporterFrame } from './ImporterFrame';
@@ -7,6 +7,7 @@ import { ColumnDragObject } from './ColumnDragObject';
 import { Column } from './ColumnDragCard';
 import { ColumnDragSourceArea } from './ColumnDragSourceArea';
 import { ColumnDragTargetArea, FieldTouchedMap } from './ColumnDragTargetArea';
+import { TranslationContext } from '../translation/TranslationContext';
 
 // re-export from a central spot
 export type Field = DragField;
@@ -84,11 +85,12 @@ export const ColumnPicker: React.FC<{
       return copy;
     });
   });
+  const translation = useContext(TranslationContext);
 
   return (
     <ImporterFrame
       fileName={preview.file.name}
-      subtitle="Select Columns"
+      subtitle={translation.selectColumns}
       error={validationError}
       onCancel={onCancel}
       onNext={() => {
@@ -108,7 +110,7 @@ export const ColumnPicker: React.FC<{
         if (!hasUnassignedRequired) {
           onAccept({ ...fieldAssignments });
         } else {
-          setValidationError('Please assign all required fields');
+          setValidationError(translation.assignAllRequiredFields);
         }
       }}
     >

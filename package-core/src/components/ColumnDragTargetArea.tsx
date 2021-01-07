@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useDrag } from 'react-use-gesture';
 
 import { FieldAssignmentMap } from './parser';
@@ -9,6 +9,7 @@ import { IconButton } from './IconButton';
 export type FieldTouchedMap = { [name: string]: boolean | undefined };
 
 import './ColumnDragTargetArea.scss';
+import { TranslationContext } from '../translation/TranslationContext';
 
 const TargetBox: React.FC<{
   hasHeaders: boolean;
@@ -91,6 +92,7 @@ const TargetBox: React.FC<{
       />
     );
   }, [field, hasHeaders, touched, assignedColumn, sourceColumn, isReDragged]);
+  const translation = useContext(TranslationContext);
 
   // @todo mouse cursor changes to reflect draggable state
   return (
@@ -112,7 +114,7 @@ const TargetBox: React.FC<{
             className="CSVImporter_ColumnDragTargetArea__boxPlaceholderHelp"
             aria-hidden
           >
-            Drag column here
+            {translation.dragColumnHere}
           </div>
         )}
 
@@ -122,7 +124,7 @@ const TargetBox: React.FC<{
         {dragState && !dragState.pointerStartInfo ? (
           <div className="CSVImporter_ColumnDragTargetArea__boxValueAction">
             <IconButton
-              label={`Assign column ${dragState.column.code}`}
+              label={`${translation.assignColumn} ${dragState.column.code}`}
               small
               type="forward"
               onClick={() => onAssign(field.name)}
@@ -133,7 +135,7 @@ const TargetBox: React.FC<{
           assignedColumn && (
             <div className="CSVImporter_ColumnDragTargetArea__boxValueAction">
               <IconButton
-                label="Clear column assignment"
+                label={translation.clearColumnAssignment}
                 small
                 type="close"
                 onClick={() => onUnassign(assignedColumn)}

@@ -1,5 +1,6 @@
 import Papa from 'papaparse';
 import { ReadableWebToNodeStream } from 'readable-web-to-node-stream';
+import { File } from '../model/File';
 
 const BOM_CODE = 65279; // 0xFEFF
 
@@ -101,7 +102,7 @@ export function parsePreview(file: File): Promise<PreviewResults> {
       },
       complete: reportSuccess
     });
-  }).catch(() => {
+  }).catch((e) => {
     return {
       parseError: new Error('Internal error while generating preview')
     };

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TranslationContext } from '../translation/TranslationContext';
 
 import { FormatErrorMessage } from './FormatErrorMessage';
 
@@ -14,6 +15,7 @@ export const FormatRawPreview: React.FC<{
 }> = React.memo(({ chunk, warning, onCancelClick }) => {
   const chunkSlice = chunk.slice(0, RAW_PREVIEW_SIZE);
   const chunkHasMore = chunk.length > RAW_PREVIEW_SIZE;
+  const translation = useContext(TranslationContext);
 
   return (
     <div className="CSVImporter_FormatRawPreview">
@@ -26,7 +28,7 @@ export const FormatRawPreview: React.FC<{
 
       {warning ? (
         <FormatErrorMessage onCancelClick={onCancelClick}>
-          {warning.message}: please check data formatting
+          {warning.message}: {translation.checkDataFormatting}
         </FormatErrorMessage>
       ) : null}
     </div>

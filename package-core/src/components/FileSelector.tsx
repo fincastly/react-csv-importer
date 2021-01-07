@@ -1,5 +1,7 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { File } from '../model/File';
+import { TranslationContext } from '../translation/TranslationContext';
 
 import './FileSelector.scss';
 
@@ -22,6 +24,7 @@ export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: dropHandler
   });
+  const translation = useContext(TranslationContext);
 
   return (
     <div
@@ -32,9 +35,9 @@ export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
       <input {...getInputProps()} />
 
       {isDragActive ? (
-        <span>Drop CSV file here...</span>
+        <span>{translation.dropCsvFilesHere}...</span>
       ) : (
-        <span>Drag-and-drop CSV file here, or click to select in folder</span>
+        <span>{translation.dropCsvFilesHereOrClick}</span>
       )}
     </div>
   );

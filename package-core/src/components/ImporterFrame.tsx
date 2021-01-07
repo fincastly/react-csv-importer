@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 
 import { TextButton } from './TextButton';
 import { IconButton } from './IconButton';
 
 import './ImporterFrame.scss';
+import { TranslationContext } from '../translation/TranslationContext';
 
 export const ImporterFrame: React.FC<{
   fileName: string;
@@ -31,6 +32,7 @@ export const ImporterFrame: React.FC<{
 }) => {
   const titleRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
+  const translation = useContext(TranslationContext);
 
   useEffect(() => {
     if (subtitleRef.current) {
@@ -44,7 +46,7 @@ export const ImporterFrame: React.FC<{
     <div className="CSVImporter_ImporterFrame">
       <div className="CSVImporter_ImporterFrame__header">
         <IconButton
-          label="Go to previous step"
+          label={translation.goToPreviousStep}
           type="arrowBack"
           disabled={!onCancel}
           onClick={onCancel}
@@ -92,7 +94,7 @@ export const ImporterFrame: React.FC<{
           </div>
         ) : null}
         <TextButton disabled={!!nextDisabled} onClick={onNext}>
-          {nextLabel || 'Next'}
+          {nextLabel || translation.next}
         </TextButton>
       </div>
     </div>

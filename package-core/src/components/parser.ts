@@ -103,7 +103,6 @@ export function parsePreview(file: File): Promise<PreviewResults> {
       complete: reportSuccess
     });
   }).catch((e) => {
-    console.log(e);
     return {
       parseError: new Error('Internal error while generating preview')
     };

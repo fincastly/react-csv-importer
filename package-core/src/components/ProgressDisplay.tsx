@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useContext } from 'react';
 
 import {
   processFile,
@@ -10,6 +10,8 @@ import {
 import { ImporterFrame } from './ImporterFrame';
 
 import './ProgressDisplay.scss';
+import { File } from '../model/File';
+import { TranslationContext } from '../translation/TranslationContext';
 
 export interface ImportInfo {
   file: File;
@@ -110,6 +112,7 @@ export function ProgressDisplay<Row extends BaseRow>({
   const chunkSizeRef = useRef(chunkSize); // wrap in ref to avoid re-triggering
   const processChunkRef = useRef(processChunk); // wrap in ref to avoid re-triggering
   const asyncLockRef = useRef<number>(0);
+  const translation = useContext(TranslationContext);
   useEffect(() => {
     const oplock = asyncLockRef.current;
 
@@ -169,13 +172,15 @@ export function ProgressDisplay<Row extends BaseRow>({
   return (
     <ImporterFrame
       fileName={preview.file.name}
-      subtitle="Import"
+      subtitle={translation.import}
       error={error && (error.message || error.toString())}
       secondaryDisabled={!isComplete || isDismissed}
-      secondaryLabel={onRestart && onClose ? 'Upload More' : undefined}
+      secondaryLabel={onRestart && onClose ? translation.uploadMore : undefined}
       onSecondary={onRestart && onClose ? onRestart : undefined}
       nextDisabled={(!onClose && !onRestart) || !isComplete || isDismissed}
-      nextLabel={!onClose && onRestart ? 'Upload More' : 'Finish'}
+      nextLabel={
+        !onClose && onRestart ? translation.uploadMore : translation.finish
+      }
       onNext={() => {
         setIsDismissed(true);
 
@@ -194,19 +199,19 @@ export function ProgressDisplay<Row extends BaseRow>({
             tabIndex={-1}
             ref={statusRef}
           >
-            {error ? 'Could not import' : 'Complete'}
+            {error ? translation.couldNotImport : translation.complete}
           </div>
         ) : (
           <div
             className="CSVImporter_ProgressDisplay__status -pending"
             role="status"
           >
-            Importing...
+            {translation.importing}...
           </div>
         )}
 
         <div className="CSVImporter_ProgressDisplay__count" role="text">
-          <var>Processed rows:</var> {progressCount}
+          <var>{translation.processedRows}:</var> {progressCount}
         </div>
 
         <div className="CSVImporter_ProgressDisplay__progressBar">

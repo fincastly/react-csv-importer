@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import { PREVIEW_ROW_COUNT } from './parser';
 
 import './ColumnDragCard.scss';
+import { TranslationContext } from '../translation/TranslationContext';
 
 export interface Column {
   index: number;
@@ -44,6 +45,7 @@ export const ColumnDragCard: React.FC<{
 
   const headerValue = hasHeaders ? column.values[0] : undefined;
   const dataValues = column.values.slice(hasHeaders ? 1 : 0, rowCount);
+  const translation = useContext(TranslationContext);
 
   return (
     // not changing variant dynamically because it causes a height jump
@@ -59,9 +61,11 @@ export const ColumnDragCard: React.FC<{
     >
       <div className="CSVImporter_ColumnDragCard__cardHeader">
         {isDummy ? (
-          <var role="text">Unassigned field</var>
+          <var role="text">{translation.unassignedFields}</var>
         ) : (
-          <var role="text">Column {column.code}</var>
+          <var role="text">
+            {translation.column} {column.code}
+          </var>
         )}
         {isDummy ? '\u00a0' : <b aria-hidden>{column.code}</b>}
       </div>

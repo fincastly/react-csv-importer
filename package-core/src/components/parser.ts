@@ -1,5 +1,6 @@
 import Papa from 'papaparse';
 import { ReadableWebToNodeStream } from 'readable-web-to-node-stream';
+import { File } from '../model/File';
 
 const BOM_CODE = 65279; // 0xFEFF
 

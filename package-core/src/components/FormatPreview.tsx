@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useMemo, useRef, useEffect, useState, useContext } from 'react';
 
 import { parsePreview, PreviewResults, PreviewInfo } from './parser';
 import { ImporterFrame } from './ImporterFrame';
@@ -7,6 +7,7 @@ import { FormatDataRowPreview } from './FormatDataRowPreview';
 import { FormatErrorMessage } from './FormatErrorMessage';
 
 import './FormatPreview.scss';
+import { TranslationContext } from '../translation/TranslationContext';
 
 export const FormatPreview: React.FC<{
   file: File;
@@ -22,6 +23,7 @@ export const FormatPreview: React.FC<{
         ...currentPreview
       }
   );
+  const translation = useContext(TranslationContext);
 
   // wrap in ref to avoid triggering effect
   const assumeNoHeadersRef = useRef(assumeNoHeaders);
@@ -63,7 +65,7 @@ export const FormatPreview: React.FC<{
       return (
         <div className="CSVImporter_FormatPreview__mainResultBlock">
           <FormatErrorMessage onCancelClick={onCancel}>
-            Import error: <b>{preview.parseError.message}</b>
+            {translation.importError}: <b>{preview.parseError.message}</b>
           </FormatErrorMessage>
         </div>
       );
@@ -72,7 +74,7 @@ export const FormatPreview: React.FC<{
     return (
       <div className="CSVImporter_FormatPreview__mainResultBlock">
         <div className="CSVImporter_FormatPreview__header">
-          Raw File Contents
+          {translation.rawFileContent}
         </div>
 
         <FormatRawPreview
@@ -84,7 +86,7 @@ export const FormatPreview: React.FC<{
         {preview.parseWarning ? null : (
           <>
             <div className="CSVImporter_FormatPreview__header">
-              Preview Import
+              {translation.previewImport}
               {!preview.isSingleLine && ( // hide setting if only one line anyway
                 <label className="CSVImporter_FormatPreview__headerToggle">
                   <input
@@ -101,7 +103,7 @@ export const FormatPreview: React.FC<{
                       );
                     }}
                   />
-                  <span>Data has headers</span>
+                  <span>{translation.dataHasHeaders}</span>
                 </label>
               )}
             </div>
@@ -130,7 +132,7 @@ export const FormatPreview: React.FC<{
     >
       {report || (
         <div className="CSVImporter_FormatPreview__mainPendingBlock">
-          Loading preview...
+          {translation.loadingPreview}...
         </div>
       )}
     </ImporterFrame>

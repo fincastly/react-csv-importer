@@ -12,6 +12,8 @@ import { ColumnPicker, Field } from './ColumnPicker';
 import { ProgressDisplay, ImportInfo } from './ProgressDisplay';
 
 import './Importer.scss';
+import { TranslationContext } from '../translation/TranslationContext';
+import { DEFAULT_TRANSLATION, Translation } from '../translation/Translation';
 
 export interface ImporterFieldProps {
   name: string;
@@ -24,6 +26,7 @@ export interface ImporterProps<Row extends BaseRow> {
   assumeNoHeaders?: boolean;
   restartable?: boolean;
   processChunk: ParseCallback<Row>;
+  translations?: Translation;
   onStart?: (info: ImportInfo) => void;
   onComplete?: (info: ImportInfo) => void;
   onClose?: (info: ImportInfo) => void;
@@ -164,12 +167,20 @@ export function Importer<Row extends BaseRow>({
   const [fields, setFields] = useState<Field[]>([]);
 
   return (
-    <div className="CSVImporter_Importer">
-      <ImporterCore fields={fields} {...props} />
+    <TranslationContext.Provider
+      value={
+        props.translations
+          ? { ...DEFAULT_TRANSLATION, ...props.translations }
+          : DEFAULT_TRANSLATION
+      }
+    >
+      <div className="CSVImporter_Importer">
+        <ImporterCore fields={fields} {...props} />
 
-      <FieldDefinitionContext.Provider value={setFields}>
-        {children}
-      </FieldDefinitionContext.Provider>
-    </div>
+        <FieldDefinitionContext.Provider value={setFields}>
+          {children}
+        </FieldDefinitionContext.Provider>
+      </div>
+    </TranslationContext.Provider>
   );
 }

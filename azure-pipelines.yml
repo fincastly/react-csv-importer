@@ -16,6 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    cd package-core
     npm install
     npm run dist
   displayName: 'npm install and build'

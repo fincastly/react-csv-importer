@@ -23,6 +23,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'dist'
+    PathtoPublish: 'package-core/dist'
     ArtifactName: 'drop'
     publishLocation: 'Container'

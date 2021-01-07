@@ -19,8 +19,8 @@ steps:
     cd package-core
     npm install
     npm run dist
-    cp package-core/package.json $(Build.ArtifactStagingDirectory)/package.json
-    cp package-core/dist $(Build.ArtifactStagingDirectory)/dist
+    cp ./package.json $(Build.ArtifactStagingDirectory)/package.json
+    cp ./dist $(Build.ArtifactStagingDirectory)/dist
   displayName: 'npm install and build'
 
 - task: PublishBuildArtifacts@1

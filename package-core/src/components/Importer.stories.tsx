@@ -13,7 +13,11 @@ type SampleImporterProps = ImporterProps<{ fieldA: string }>;
 
 export const Main: Story<SampleImporterProps> = (args: SampleImporterProps) => {
   return (
-    <Importer {...args}>
+    <Importer
+      {...args}
+      onCancel={() => console.log('cancel')}
+      onUpload={() => console.log('upload')}
+    >
       <ImporterField name="fieldA" label="Field A" />
       <ImporterField name="fieldB" label="Field B" optional />
     </Importer>

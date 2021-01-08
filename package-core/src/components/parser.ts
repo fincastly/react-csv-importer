@@ -41,9 +41,9 @@ export function parsePreview(file: File): Promise<PreviewResults> {
     function reportSuccess() {
       // PapaParse normally complains first anyway, but might as well flag it
       if (rowAccumulator.length === 0) {
-        return {
+        resolve({
           parseError: new Error('File is empty')
-        };
+        });
       }
 
       // remember whether this file has only one line

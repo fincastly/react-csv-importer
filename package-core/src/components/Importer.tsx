@@ -27,6 +27,8 @@ export interface ImporterProps<Row extends BaseRow> {
   onStart?: (info: ImportInfo) => void;
   onComplete?: (info: ImportInfo) => void;
   onClose?: (info: ImportInfo) => void;
+  onCancel?: () => void;
+  onUpload?: () => void;
 }
 
 type FieldListSetter = (prev: Field[]) => Field[];
@@ -77,7 +79,9 @@ function ImporterCore<Row extends BaseRow>({
   processChunk,
   onStart,
   onComplete,
-  onClose
+  onClose,
+  onUpload,
+  onCancel
 }: React.PropsWithChildren<
   ImporterProps<Row> & {
     fields: Field[];
@@ -93,9 +97,16 @@ function ImporterCore<Row extends BaseRow>({
     setFieldAssignments
   ] = useState<FieldAssignmentMap | null>(null);
 
-  const fileHandler = useCallback((file: File) => {
-    setSelectedFile(file);
-  }, []);
+  const fileHandler = useCallback(
+    (file: File) => {
+      setSelectedFile(file);
+
+      if (onUpload) {
+        onUpload();
+      }
+    },
+    [onUpload]
+  );
 
   if (selectedFile === null) {
     return <FileSelector onSelected={fileHandler} />;
@@ -113,6 +124,10 @@ function ImporterCore<Row extends BaseRow>({
         }}
         onCancel={() => {
           setSelectedFile(null);
+
+          if (onCancel) {
+            onCancel();
+          }
         }}
       />
     );

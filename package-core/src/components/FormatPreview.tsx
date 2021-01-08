@@ -58,7 +58,6 @@ export const FormatPreview: React.FC<{
     if (!preview) {
       return null;
     }
-
     if (preview.parseError) {
       return (
         <div className="CSVImporter_FormatPreview__mainResultBlock">

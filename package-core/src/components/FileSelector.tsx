@@ -5,9 +5,11 @@ import { TranslationContext } from '../translation/TranslationContext';
 
 import './FileSelector.scss';
 
-export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
-  onSelected
-}) => {
+type FileSelectorProps = {
+  onSelected: (file: File) => void;
+};
+
+export const FileSelector: React.FC<FileSelectorProps> = ({ onSelected }) => {
   const onSelectedRef = useRef(onSelected);
   onSelectedRef.current = onSelected;
 

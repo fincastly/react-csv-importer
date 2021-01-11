@@ -3,8 +3,26 @@ import { useDropzone } from 'react-dropzone';
 
 import './FileSelector.scss';
 
-export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
-  onSelected
+export type DropzoneOptionsOverride = {
+  accept?: string | string[];
+  minSize?: number;
+  maxSize?: number;
+  preventDropOnDocument?: boolean;
+  noClick?: boolean;
+  noKeyboard?: boolean;
+  noDrag?: boolean;
+  noDragEventsBubbling?: boolean;
+  disabled?: boolean;
+};
+
+type FileSelectorProps = {
+  onSelected: (file: File) => void;
+  dropzoneOptions?: DropzoneOptionsOverride;
+};
+
+export const FileSelector: React.FC<FileSelectorProps> = ({
+  onSelected,
+  dropzoneOptions
 }) => {
   const onSelectedRef = useRef(onSelected);
   onSelectedRef.current = onSelected;
@@ -20,6 +38,7 @@ export const FileSelector: React.FC<{ onSelected: (file: File) => void }> = ({
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    ...dropzoneOptions,
     onDrop: dropHandler
   });
 

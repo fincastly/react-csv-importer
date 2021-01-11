@@ -6,7 +6,7 @@ import {
   ParseCallback,
   BaseRow
 } from './parser';
-import { FileSelector } from './FileSelector';
+import { FileSelector, DropzoneOptionsOverride } from './FileSelector';
 import { FormatPreview } from './FormatPreview';
 import { ColumnPicker, Field } from './ColumnPicker';
 import { ProgressDisplay, ImportInfo } from './ProgressDisplay';
@@ -27,6 +27,7 @@ export interface ImporterProps<Row extends BaseRow> {
   onStart?: (info: ImportInfo) => void;
   onComplete?: (info: ImportInfo) => void;
   onClose?: (info: ImportInfo) => void;
+  dropzoneOptions?: DropzoneOptionsOverride;
 }
 
 type FieldListSetter = (prev: Field[]) => Field[];
@@ -77,7 +78,8 @@ function ImporterCore<Row extends BaseRow>({
   processChunk,
   onStart,
   onComplete,
-  onClose
+  onClose,
+  dropzoneOptions
 }: React.PropsWithChildren<
   ImporterProps<Row> & {
     fields: Field[];
@@ -98,7 +100,12 @@ function ImporterCore<Row extends BaseRow>({
   }, []);
 
   if (selectedFile === null) {
-    return <FileSelector onSelected={fileHandler} />;
+    return (
+      <FileSelector
+        onSelected={fileHandler}
+        dropzoneOptions={dropzoneOptions}
+      />
+    );
   }
 
   if (preview === null || editFormat) {

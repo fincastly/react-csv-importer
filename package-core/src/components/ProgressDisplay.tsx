@@ -44,7 +44,10 @@ export function ProgressDisplay<Row extends BaseRow>({
   chunkSize?: number;
   fieldAssignments: FieldAssignmentMap;
   processChunk: ParseCallback<Row>;
-  onStart?: (info: ImportInfo, fieldAssignments: FieldAssignmentMap) => void;
+  onStart?: (
+    info: ImportInfo,
+    fieldAssignments: FieldAssignmentMap | { [x: string]: string }[]
+  ) => void;
   onComplete?: (info: ImportInfo) => void;
   onRestart?: () => void;
   onClose?: (info: ImportInfo) => void;
@@ -86,9 +89,17 @@ export function ProgressDisplay<Row extends BaseRow>({
   const onStartRef = useRef(onStart); // wrap in ref to avoid re-triggering (only first instance is needed)
   useEffect(() => {
     if (onStartRef.current) {
-      onStartRef.current(importInfo, fieldAssignments);
+      onStartRef.current(
+        importInfo,
+        fieldAssignments && preview.firstRows.length > 0 && preview.hasHeaders
+          ? Object.keys(fieldAssignments).map((fieldName) => ({
+              [fieldName]:
+                preview.firstRows[0][fieldAssignments[fieldName] as number]
+            }))
+          : fieldAssignments
+      );
     }
-  }, [importInfo, fieldAssignments]);
+  }, [importInfo, fieldAssignments, preview.firstRows, preview.hasHeaders]);
 
   // notify on end of processing
   // (separate effect in case of errors)

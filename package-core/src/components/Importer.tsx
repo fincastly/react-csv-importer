@@ -28,7 +28,7 @@ export interface ImporterProps<Row extends BaseRow> {
   restartable?: boolean;
   processChunk: ParseCallback<Row>;
   translations?: Translation;
-  onStart?: (info: ImportInfo, fieldAssignments: FieldAssignmentMap) => void;
+  onStart?: (info: ImportInfo, fieldAssignments: FieldAssignmentMap | { [x: string]: string }[]) => void;
   onComplete?: (info: ImportInfo) => void;
   onClose?: (info: ImportInfo) => void;
   onCancel?: () => void;

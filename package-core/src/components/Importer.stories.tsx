@@ -15,6 +15,7 @@ export const Main: Story<SampleImporterProps> = (args: SampleImporterProps) => {
   return (
     <Importer
       {...args}
+      onStart={(info, assignments) => console.log(assignments)}
       onCancel={() => console.log('cancel')}
       onUpload={() => console.log('upload')}
     >
